@@ -1,6 +1,7 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useRef } from 'react'
 import Collapsible from './components/Collapsible'
 import Book from './components/Book'
+import AddBookForm from './components/AddBookForm'
 
 const App = () => {
   const bookArrayStart = [
@@ -24,15 +25,23 @@ const App = () => {
   const [bookArray, bookArraySet] = useState(bookArrayStart)
   //Book data, do I put within the useState the objects?
 
+  const handleCreateBook = (bookObject) => {
+    const newBook = { ...bookObject, id: crypto.randomUUID() }
+    bookArraySet(bookArray.concat(newBook))
+    formRef.current.toggleVisibility()
+  }
 
-
+  const formRef = useRef()
 
   return (
     <div>
-      <Collapsible>
+      <Collapsible buttonLabel='Show Book List'>
         {bookArray.map(book => 
           <Book key={book.id} book={book}/>
         )}
+      </Collapsible>
+      <Collapsible buttonLabel='Create A Book' ref={formRef}>
+        <AddBookForm createBook={handleCreateBook}/>
       </Collapsible>
     </div>
 

@@ -1,9 +1,14 @@
-import { useState } from 'react'
+import { useState, useImperativeHandle } from 'react'
 
-const Collapsible = (props) => {
+const Collapsible = ({ children, ref, buttonLabel }) => {
     const [visibility, setVisibility] = useState(false)
     //Start visibility in a false state.
     const contentStyle = { display: visibility ? '' : 'none' }
+    const toggleVisibility = () => setVisibility(!visibility)
+
+    useImperativeHandle(ref, () => {
+        return { toggleVisibility }
+    })
 
     return (
         /*JSX goes here
@@ -11,9 +16,9 @@ const Collapsible = (props) => {
         */
        <div>
             <div style={contentStyle}>
-                        {props.children}
+                {children}
             </div>
-        <button onClick={() => setVisibility(!visibility)}>{visibility ? 'Hide' : 'Show'}</button>
+        <button onClick={toggleVisibility}>{visibility ? 'Hide' : buttonLabel}</button>
        </div>
     )
 }
