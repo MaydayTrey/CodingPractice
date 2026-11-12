@@ -5,7 +5,7 @@ const BookView = ({ bookArray }) =>  {
     const book = bookArray.find(book => book.id === id)
 
     if(!book){
-        return null
+        return <p>Book not found.</p>
     }
 
     return (

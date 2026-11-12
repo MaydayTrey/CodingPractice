@@ -1,8 +1,10 @@
 import { useState } from 'react'
-import Book from './components/Book'
 import AddBookForm from './components/AddBookForm'
 import { Link, Routes, Route, useNavigate } from 'react-router-dom'
 import BookList from './components/BookList'
+import BookView from './components/BookView'
+import Home from './components/Home'
+import NotFound from './components/NotFound'
 
 const App = () => {
   const bookArrayStart = [
@@ -46,10 +48,7 @@ const App = () => {
         <Route path="/books" element={<BookList bookArray={bookArray}/>}/>
         <Route path="/create" element={<AddBookForm createBook={handleCreateBook}/>}/>
         <Route path="/books/:id" element={<BookView bookArray={bookArray}/>} />
-        {/* How do we do this properly for the Book element? before it looked into each item in the array.
-        and it pulled out the object and the book.id, now?
-        My guess would be we need some way to find the proper book; 
-        using the param we pass to find the id in the array?   */}
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </div>
 
