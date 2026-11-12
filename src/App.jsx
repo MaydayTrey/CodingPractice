@@ -2,6 +2,7 @@ import { useState, useRef } from 'react'
 import Collapsible from './components/Collapsible'
 import Book from './components/Book'
 import AddBookForm from './components/AddBookForm'
+import { Link, Routes, Route, useNavigate } from 'react-router-dom'
 
 const App = () => {
   const bookArrayStart = [
@@ -25,24 +26,25 @@ const App = () => {
   const [bookArray, bookArraySet] = useState(bookArrayStart)
   //Book data, do I put within the useState the objects?
 
+  const navigate = useNavigate()
   const handleCreateBook = (bookObject) => {
     const newBook = { ...bookObject, id: crypto.randomUUID() }
     bookArraySet(bookArray.concat(newBook))
-    formRef.current.toggleVisibility()
+    navigate('/books')
   }
-
-  const formRef = useRef()
 
   return (
     <div>
-      <Collapsible buttonLabel='Show Book List'>
-        {bookArray.map(book => 
-          <Book key={book.id} book={book}/>
-        )}
-      </Collapsible>
-      <Collapsible buttonLabel='Create A Book' ref={formRef}>
-        <AddBookForm createBook={handleCreateBook}/>
-      </Collapsible>
+      <nav>
+        <Link to="/books">Book List</Link>
+        <Link to="/create">Create a Book</Link>
+      </nav>
+
+      <Routes>
+        <Route path="/books" element={bookArray.map(book => <Book key={book.id} book={book}/>)}/>
+        {/*So not entirely sure if that is correct, winging it a bit here. As this is a mapping, and generally element takes just a component, but this is a mapping of a component */}
+        <Route path="/create" element={<AddBookForm createBook={handleCreateBook}/>}/>
+      </Routes>
     </div>
 
   )
@@ -52,15 +54,11 @@ const App = () => {
 export default App
 
 /*
-useRef was a important tenet of what was taught in 5(b), which we will be covering more in-depth in this instance.
+In this update; we will use navigation and URL state to render components. 
 
-Okay, for collapsible, I don't seem to be making any use of ref,
-I will use ref for addBook. 
+First pass; imported Link, Routes, Route. 
+I am trying to convert from the collapsible form to the version in which we simply click a navigational element to show the proper component we deisre, and reflect this in the URL.
 
-
-IDs for book objects are currently simple, and hardcoded. 
-This will matter when we create books; and the tool will be:
-crypto.randomUUID()
 
 
 
