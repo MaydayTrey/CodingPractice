@@ -1,8 +1,8 @@
-import { useState, useRef } from 'react'
-import Collapsible from './components/Collapsible'
+import { useState } from 'react'
 import Book from './components/Book'
 import AddBookForm from './components/AddBookForm'
 import { Link, Routes, Route, useNavigate } from 'react-router-dom'
+import BookList from './components/BookList'
 
 const App = () => {
   const bookArrayStart = [
@@ -36,14 +36,20 @@ const App = () => {
   return (
     <div>
       <nav>
+        <Link to="/">Home</Link>
         <Link to="/books">Book List</Link>
         <Link to="/create">Create a Book</Link>
       </nav>
 
       <Routes>
-        <Route path="/books" element={bookArray.map(book => <Book key={book.id} book={book}/>)}/>
-        {/*So not entirely sure if that is correct, winging it a bit here. As this is a mapping, and generally element takes just a component, but this is a mapping of a component */}
+        <Route path="/" element={<Home />} />
+        <Route path="/books" element={<BookList bookArray={bookArray}/>}/>
         <Route path="/create" element={<AddBookForm createBook={handleCreateBook}/>}/>
+        <Route path="/books/:id" element={<BookView bookArray={bookArray}/>} />
+        {/* How do we do this properly for the Book element? before it looked into each item in the array.
+        and it pulled out the object and the book.id, now?
+        My guess would be we need some way to find the proper book; 
+        using the param we pass to find the id in the array?   */}
       </Routes>
     </div>
 
